@@ -1,9 +1,25 @@
 // **************************************************************************
 //
-//  WRT54G.H - Header file for the WRT54G/GS EJTAG Debrick Utility  v4.8
+//  tjtag.h - Header file for the WRT54G/GS EJTAG Debrick Utility  v4.8
+//
 //
 //  Note:
 //  This program is for De-Bricking the WRT54G/GS routers
+//
+// My modifications - Thanks to HDM's great work
+// tornado@odessaua.com
+// New for v4.8.1 -Added 2 new Flash Chip Parts to the list:
+//                     - EN29LV160A  2Mx16 TopB     (2MB)
+//                     - EN29LV160A  2Mx16 BotB     (2MB)
+//                 Added 4 New Processors
+//                     - BCM5453 Rev 1
+//                     - BCM5453 Rev 2
+//                     - BCM5365 Rev 1
+//                     - BCM4704 Rev 9
+//                 Added the following New Switch Options
+//                     - /bypass .............Unlock Bypass
+//                       for AMD/Spansion type Flash Chips
+//                 Added BSP option for use with flash, erase & backup
 //
 //  New for v4.8 - Added 2 new Flash Chip Parts to the list:
 //                     - SST39VF6401B 4Mx16 BotB     (8MB)
@@ -246,20 +262,20 @@ unsigned int pracc_readword_code_module[] = {
                // # HairyDairyMaid's Assembler PrAcc Read Word Routine
                // #
                // start:
-               // 
+               //
                // # Load R1 with the address of the pseudo-address register
   0x3C01FF20,  // lui $1,  0xFF20
   0x34210000,  // ori $1,  0x0000
-               // 
+               //
                // # Load R2 with the address for the read
   0x8C220000,  // lw $2,  ($1)
-               // 
+               //
                // # Load R3 with the word @R2
   0x8C430000,  // lw $3, 0($2)
-               // 
+               //
                // # Store the value into the pseudo-data register
   0xAC230004,  // sw $3, 4($1)
-               // 
+               //
   0x00000000,  // nop
   0x1000FFF9,  // beq $0, $0, start
   0x00000000}; // nop
@@ -270,20 +286,20 @@ unsigned int pracc_writeword_code_module[] = {
                // # HairyDairyMaid's Assembler PrAcc Write Word Routine
                // #
                // start:
-               // 
+               //
                // # Load R1 with the address of the pseudo-address register
   0x3C01FF20,  // lui $1,  0xFF20
   0x34210000,  // ori $1,  0x0000
-               // 
+               //
                // # Load R2 with the address for the write
   0x8C220000,  // lw $2,  ($1)
-               // 
+               //
                // # Load R3 with the data from pseudo-data register
   0x8C230004,  // lw $3, 4($1)
-               // 
+               //
                // # Store the word at @R2 (the address)
   0xAC430000,  // sw $3,  ($2)
-               // 
+               //
   0x00000000,  // nop
   0x1000FFF9,  // beq $0, $0, start
   0x00000000}; // nop
@@ -294,20 +310,20 @@ unsigned int pracc_readhalf_code_module[] = {
                // # HairyDairyMaid's Assembler PrAcc Read HalfWord Routine
                // #
                // start:
-               // 
+               //
                // # Load R1 with the address of the pseudo-address register
   0x3C01FF20,  // lui $1,  0xFF20
   0x34210000,  // ori $1,  0x0000
-               // 
+               //
                // # Load R2 with the address for the read
   0x8C220000,  // lw $2,  ($1)
-               // 
+               //
                // # Load R3 with the half word @R2
   0x94430000,  // lhu $3, 0($2)
-               // 
+               //
                // # Store the value into the pseudo-data register
   0xAC230004,  // sw $3, 4($1)
-               // 
+               //
   0x00000000,  // nop
   0x1000FFF9,  // beq $0, $0, start
   0x00000000}; // nop
@@ -318,20 +334,20 @@ unsigned int pracc_writehalf_code_module[] = {
                // # HairyDairyMaid's Assembler PrAcc Write HalfWord Routine
                // #
                // start:
-               // 
+               //
                // # Load R1 with the address of the pseudo-address register
   0x3C01FF20,  // lui $1,  0xFF20
   0x34210000,  // ori $1,  0x0000
-               // 
+               //
                // # Load R2 with the address for the write
   0x8C220000,  // lw $2,  ($1)
-               // 
+               //
                // # Load R3 with the data from pseudo-data register
   0x8C230004,  // lw $3, 4($1)
-               // 
+               //
                // # Store the half word at @R2 (the address)
   0xA4430000,  // sh $3,  ($2)
-               // 
+               //
   0x00000000,  // nop
   0x1000FFF9,  // beq $0, $0, start
   0x00000000}; // nop
