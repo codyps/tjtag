@@ -25,17 +25,17 @@
 
 #ifndef WINDOWS_VERSION
 
-   #include <unistd.h>
-   #include <sys/ioctl.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
 
-   #ifdef __FreeBSD__
-      #include <dev/ppbus/ppi.h>
-      #include <dev/ppbus/ppbconf.h>
-      #define PPWDATA PPISDATA
-      #define PPRSTATUS PPIGSTATUS
-   #else
-      #include <linux/ppdev.h>
-   #endif
+#ifdef __FreeBSD__
+#include <dev/ppbus/ppi.h>
+#include <dev/ppbus/ppbconf.h>
+#define PPWDATA PPISDATA
+#define PPRSTATUS PPIGSTATUS
+#else
+#include <linux/ppdev.h>
+#endif
 
 #endif
 
@@ -45,12 +45,14 @@
 #define RETRY_ATTEMPTS 16
 
 // --- Xilinx Type Cable ---
+
 #define TDI     0
 #define TCK     1
 #define TMS     2
 #define TDO     4
 
-// --- Wiggler Type Cable ---
+// ---Wiggler Type Cable ---
+
 #define WTDI      3
 #define WTCK      2
 #define WTMS      1
@@ -161,100 +163,108 @@ void ExecuteDebugModule(unsigned int *pmodule);
 void check_ejtag_features(void);
 
 
-unsigned int pracc_readword_code_module[] = {
-               // #
-               // # HairyDairyMaid's Assembler PrAcc Read Word Routine
-               // #
-               // start:
-               //
-               // # Load R1 with the address of the pseudo-address register
+unsigned int pracc_readword_code_module[] =
+{
+  // #
+  // # HairyDairyMaid's Assembler PrAcc Read Word Routine
+  // #
+  // start:
+  //
+  // # Load R1 with the address of the pseudo-address register
   0x3C01FF20,  // lui $1,  0xFF20
   0x34210000,  // ori $1,  0x0000
-               //
-               // # Load R2 with the address for the read
+  //
+  // # Load R2 with the address for the read
   0x8C220000,  // lw $2,  ($1)
-               //
-               // # Load R3 with the word @R2
+  //
+  // # Load R3 with the word @R2
   0x8C430000,  // lw $3, 0($2)
-               //
-               // # Store the value into the pseudo-data register
+  //
+  // # Store the value into the pseudo-data register
   0xAC230004,  // sw $3, 4($1)
-               //
+  //
   0x00000000,  // nop
   0x1000FFF9,  // beq $0, $0, start
-  0x00000000}; // nop
+  0x00000000
+}; // nop
 
 
-unsigned int pracc_writeword_code_module[] = {
-               // #
-               // # HairyDairyMaid's Assembler PrAcc Write Word Routine
-               // #
-               // start:
-               //
-               // # Load R1 with the address of the pseudo-address register
+unsigned int pracc_writeword_code_module[] =
+{
+  // #
+  // # HairyDairyMaid's Assembler PrAcc Write Word Routine
+  // #
+  // start:
+  //
+  // # Load R1 with the address of the pseudo-address register
   0x3C01FF20,  // lui $1,  0xFF20
   0x34210000,  // ori $1,  0x0000
-               //
-               // # Load R2 with the address for the write
+  //
+  // # Load R2 with the address for the write
   0x8C220000,  // lw $2,  ($1)
-               //
-               // # Load R3 with the data from pseudo-data register
+  //
+  // # Load R3 with the data from pseudo-data register
   0x8C230004,  // lw $3, 4($1)
-               //
-               // # Store the word at @R2 (the address)
+  //
+  // # Store the word at @R2 (the address)
   0xAC430000,  // sw $3,  ($2)
-               //
+  //
   0x00000000,  // nop
   0x1000FFF9,  // beq $0, $0, start
-  0x00000000}; // nop
+  0x00000000
+}; // nop
 
 
-unsigned int pracc_readhalf_code_module[] = {
-               // #
-               // # HairyDairyMaid's Assembler PrAcc Read HalfWord Routine
-               // #
-               // start:
-               //
-               // # Load R1 with the address of the pseudo-address register
+unsigned int pracc_readhalf_code_module[] =
+{
+  // #
+  // # HairyDairyMaid's Assembler PrAcc Read HalfWord Routine
+  // #
+  // start:
+  //
+  // # Load R1 with the address of the pseudo-address register
   0x3C01FF20,  // lui $1,  0xFF20
   0x34210000,  // ori $1,  0x0000
-               //
-               // # Load R2 with the address for the read
+  //
+  // # Load R2 with the address for the read
   0x8C220000,  // lw $2,  ($1)
-               //
-               // # Load R3 with the half word @R2
+  //
+  // # Load R3 with the half word @R2
   0x94430000,  // lhu $3, 0($2)
-               //
-               // # Store the value into the pseudo-data register
+  //
+  // # Store the value into the pseudo-data register
   0xAC230004,  // sw $3, 4($1)
-               //
+  //
   0x00000000,  // nop
   0x1000FFF9,  // beq $0, $0, start
-  0x00000000}; // nop
+  0x00000000
+}; // nop
 
 
-unsigned int pracc_writehalf_code_module[] = {
-               // #
-               // # HairyDairyMaid's Assembler PrAcc Write HalfWord Routine
-               // #
-               // start:
-               //
-               // # Load R1 with the address of the pseudo-address register
+unsigned int pracc_writehalf_code_module[] =
+{
+  // #
+  // # HairyDairyMaid's Assembler PrAcc Write HalfWord Routine
+  // #
+  // start:
+  //
+  // # Load R1 with the address of the pseudo-address register
   0x3C01FF20,  // lui $1,  0xFF20
   0x34210000,  // ori $1,  0x0000
-               //
-               // # Load R2 with the address for the write
+  //
+  // # Load R2 with the address for the write
   0x8C220000,  // lw $2,  ($1)
-               //
-               // # Load R3 with the data from pseudo-data register
+  //
+  // # Load R3 with the data from pseudo-data register
   0x8C230004,  // lw $3, 4($1)
-               //
-               // # Store the half word at @R2 (the address)
+  //
+  // # Store the half word at @R2 (the address)
   0xA4430000,  // sh $3,  ($2)
-               //
+  //
   0x00000000,  // nop
   0x1000FFF9,  // beq $0, $0, start
-  0x00000000}; // nop
+  0x00000000
+}; // nop
 
 
 // **************************************************************************
