@@ -23,7 +23,7 @@
 #include <stdlib.h>
 #include <fcntl.h>
 
-#ifndef WINDOWS_VERSION
+#ifndef __WIN32__
 
 #include <unistd.h>
 #include <sys/ioctl.h>

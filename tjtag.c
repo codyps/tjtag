@@ -4,10 +4,9 @@
 //
 
 // Default is Compile for Linux (both #define's below should be commented out)
-//#define WINDOWS_VERSION   // uncomment only this for Windows Compile / MS Visual C Compiler
 //#define __FreeBSD__       // uncomment only this for FreeBSD
 
-#ifdef WINDOWS_VERSION
+#ifdef __WIN32__
 #include <windows.h>      // Only for Windows Compile
 #define strcasecmp  stricmp
 #define strncasecmp strnicmp
@@ -15,7 +14,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 
-#ifdef WINDOWS_VERSION
+#ifdef __WIN32__
 #define tnano(seconds) Sleep((seconds) / 1000000)
 #define tmicro(seconds) Sleep((seconds) * 1000)
 /* Windows sleep is milliseconds, time/1000000 gives us nanoseconds */
@@ -418,7 +417,7 @@ flash_chip_type  flash_chip_list[] =
 
 void lpt_openport(void)
 {
-#ifdef WINDOWS_VERSION    // ---- Compiler Specific Code ----
+#ifdef __WIN32__    // ---- Compiler Specific Code ----
 
     HANDLE h;
 
@@ -471,7 +470,7 @@ void lpt_openport(void)
 
 void lpt_closeport(void)
 {
-#ifndef WINDOWS_VERSION   // ---- Compiler Specific Code ----
+#ifndef __WIN32__   // ---- Compiler Specific Code ----
 
 #ifndef __FreeBSD__    // ---- Compiler Specific Code ----
 
@@ -509,7 +508,7 @@ static unsigned char clockin(int tms, int tdi)
     cable_wait();
 
 
-#ifdef WINDOWS_VERSION   // ---- Compiler Specific Code ----
+#ifdef __WIN32__   // ---- Compiler Specific Code ----
     _outp(0x378, data);
 #else
 
@@ -520,13 +519,13 @@ static unsigned char clockin(int tms, int tdi)
     cable_wait();
 
 
-#ifdef WINDOWS_VERSION   // ---- Compiler Specific Code ----
+#ifdef __WIN32__   // ---- Compiler Specific Code ----
     _outp(0x378, data);
 #else
     ioctl(pfd, PPWDATA, &data);
 #endif
 
-#ifdef WINDOWS_VERSION   // ---- Compiler Specific Code ----
+#ifdef __WIN32__   // ---- Compiler Specific Code ----
     data = (unsigned char)_inp(0x379);
 #else
     ioctl(pfd, PPRSTATUS, &data);
