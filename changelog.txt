@@ -1,8 +1,108 @@
- Note:
- My modifications - Thanks to HDM's great work
- tornado@odessaua.com tornado@dd-wrt.com
+﻿Please contact me via e-mail tornado@odessaua.com for questions, corrections, and if I accidently left you out of the credits.
+New for V3.0.1
+	BUG FIX - duplicate data written when backing up
+	Change credit names
 
- New for V2.1.4 - Added 4 new flash Chip parts to the list:
+New for V3
+	-Added 13 new processors
+
+		Broadcom BCM4716 Rev 1 CPU
+		Broadcom BCM5354 KFBG Rev 3 CPU
+		Broadcom BCM3345 KPB Rev 1 CPU
+		Broadcom BCM6358 Rev 1 CPU
+		Broadcom BCM6368 Rev 1 CPU
+		Broadcom BCM4321L RADIO STOP
+ 		XScale IXP42X 266mhz
+		GW234X (IXP42X 266MHz) BE
+    		XScale IXP42X 400mhz,
+    		XScale IXP42X 533mhz
+    		ARM 940T
+    		Marvell Feroceon 88F5181
+    		LX4380
+
+	-Added  25 New flash chip parts
+
+		K8D3216UTC  2Mx16 TopB     (4MB)
+		K8D3216UBC  2Mx16 BotB     (4MB)  
+		Macronix MX25L1605D        (2MB) Serial 
+		Macronix MX25L3205D        (4MB) Serial
+		Macronix MX25L6405D        (8MB) Serial				STMicro M25P16             (2MB) Serial
+		STMicro M25P32             (4MB) Serial
+		STMicro M25P64             (8MB) Serial
+		STMicro M25P128            (16MB) Serial
+		MX29LV640B 4Mx16 TopB      (16MB)
+		MX29LV640B 4Mx16 BotB      (16MB)
+		Spansion S29GL128P U       (16MB)
+		Spansion S29GL128M U       (16MB)
+		Spansion S29GL256P U       (32MB)
+		Spansion S29GL512P U       (64MB)
+		Spansion S29GL01GP U       (128MB)				Spansion S25FL016A         (2MB) Serial
+		Spansion S25FL032A         (4MB) Serial
+		Spansion S25FL064A         (8MB) Serial
+		Winbond W25X32             (4MB) Serial
+		Winbond W25X64             (8MB) Serial
+		EON EN29LV640 4Mx16 TopB   (8MB)
+		EON EN29LV640 4Mx16 BotB   (8MB) 
+		AT49BV322A 2Mx16 BotB      (4MB)
+		AT49BV322A(T) 2Mx16 TopB   (4MB)
+
+Added  switch  /swap_endian 
+		swaps the endian of the  flash data – backup only
+
+Added switch /flash_debug
+		provides debug information when detecting flash chip 
+		manufacturer and device ID
+
+Added new option -probeonly:custom 
+			requires only /window: when probing flash chips
+
+Added preliminary SPI for detection and read/write to serial flash chips
+		Big Thanks, Yoon Lee, Joey Goncalves, and openwrt kernel developers for the SPI code
+ 		and porting the Atheros base SPI to tjtag.
+
+Added preliminary Broadcom SPI code, for detection and read/write on Broadcom based
+ 		processors.
+		Big Thanks to eko@dd-wrt.com, for donating the WGR614v8 and endless
+ 		hours of testing with me, without, we would have no Broadcom SPI.
+
+		Big Thanks to BrainSlayer – DD-WRT.COM for your support
+
+		Big Thanks to Chip for his FON2200 and flash chip definitions and
+ 		testing on the FON 2200
+
+		Also Big Thanks to all the others at DD-WRT for helping me test and
+ 		reporting back, RedHawk, Barryware, and others.
+
+Added options to backup, flash, erase
+		wgrv8bdata,  wgrv9bdata, cfe128
+
+
+NOTES
+SPI has only had limited testing, but has been verified to work on:
+
+Fonera 2200A “Thanks for the donation desigabri”
+DIR-300
+WGR614v8	“Thanks Eko” - 128k CFE
+WGR614v9	128k CFE
+
+All of the above targets require a /swap_endian switch when backing up.
+The WGR's require /noreset “BCM5354 processors” also the WGRV8 and WGRV9 have 128k CFE's. 
+
+There are probably others it will work on as well, but due to the limited test targets available to me, this is all that has been tested.
+There are a few newer commands and switches for these new routers.
+
+For the wgr614v8 and wgr614v9 there are:
+
+Board specific data “MAC address, etc”
+Ex. backup:wgrv8bdata /noreset /swap_endian
+EX. flash:wgrv8bdata /noreset
+
+Board specific data “Mac address, etc”
+Ex. backup:wgrv9bdata /noreset /swp_endian
+Ex. backup:wgrv9nvram /noreset
+
+
+ New for V2.1.3 - Added 4 new flash Chip parts to the list:
 		       - EON EN29LV320 2Mx16 BotB   (4MB)
 		       - EON EN29LV320 2Mx16 TopB   (4MB)
 		       - Winbond W19B320AB BotB     (4MB)
@@ -21,8 +121,8 @@
 			Broadcom BCM6338 Rev 1 CPU - Speedtouch
 			Linkstation 2 with RISC K4C chip
               	Added  Winbond 3 Byte Device ID Detection
-                       Contributed by kb1klk@aetheriatech.org
-		Added  changelog.doc		
+                      		Contributed by kb1klk@aetheriatech.org
+		removed changelog.txt - replaced with changelog.doc		
 
  New for v2.0 -Added 13 new Flash Chip Parts to the list:
                      - Macronix MX25L160A         (2MB)
@@ -49,6 +149,7 @@
 
 
 
+
 	
 
 4.8.1 are Tornado mods 
@@ -64,7 +165,9 @@ New for v4.8.1 -Added 2 new Flash Chip Parts to the list:
                      - /bypass .............Unlock Bypass
                        for AMD/Spansion type Flash Chips
                  Added /bsp option for use with flash, erase & backup
-
+Note:
+ My modifications - Thanks to HDM's great work
+ tornado@odessaua.com
 
 
   New for v4.8 - Added 2 new Flash Chip Parts to the list:
@@ -210,3 +313,4 @@ New for v4.8.1 -Added 2 new Flash Chip Parts to the list:
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
  **************************************************************************
+

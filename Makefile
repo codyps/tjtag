@@ -1,4 +1,4 @@
-CFLAGS += -Wall -O2
+CFLAGS += -Wall -O2 
 
 WRT54GMEMOBJS = tjtag.o
 
