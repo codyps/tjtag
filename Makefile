@@ -1,11 +1,17 @@
-CFLAGS += -Wall -O2 
+CC=gcc
+RM=rm -f
 
-WRT54GMEMOBJS = tjtag.o
+INCLUDE = -I/cygdrive/c/MinGW/include
+CFLAGS += -Wall -O2 $(INCLUDE)
 
-all: tjtag
+TARGET = tjtag
 
-wrt54g: $(WRT54GMEMOBJS)
-	gcc $(CFLAGS) -o $@ $(WRT54GMEMOBJS)
+SRC = tjtag.c
+
+all: $(TARGET)
+
+tjtag: $(SRC)
+	$(CC) $(CFLAGS) -c $(SRC) -o bin/$@
 
 clean:
-	rm -rf *.o tjtag
+	$(RM) $(SRC:.c=.o) bin/$(TARGET)
