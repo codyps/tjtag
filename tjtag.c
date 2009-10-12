@@ -432,39 +432,33 @@ void lpt_openport(void)
 
 #else                     // ---- Compiler Specific Code ----
 
-#ifdef __FreeBSD__     // ---- Compiler Specific Code ----
+    char * parport_path;
+  #ifdef __FreeBSD__     // ---- Compiler Specific Code ----
+    
+    parport_path = "/dev/ppi0";
 
-    pfd = open("/dev/ppi0", O_RDWR);
+  #else /* linux? */
+    parport_path = "/dev/parport0";
+
+  #endif
+
+
+    pfd = open(parport_path, O_RDWR);
+
     if (pfd < 0)
     {
-        perror("Failed to open /dev/ppi0");
+        perror("Failed to open %s", parport_path);
         exit(0);
     }
     if ((ioctl(pfd, PPEXCL) < 0) || (ioctl(pfd, PPCLAIM) < 0))
     {
-        perror("Failed to lock /dev/ppi0");
-        close(pfd);
-        exit(0);
-    }
-
-#else                  // ---- Compiler Specific Code ----
-
-    pfd = open("/dev/parport0", O_RDWR);
-    if (pfd < 0)
-    {
-        perror("Failed to open /dev/parport0");
-        exit(0);
-    }
-    if ((ioctl(pfd, PPEXCL) < 0) || (ioctl(pfd, PPCLAIM) < 0))
-    {
-        perror("Failed to lock /dev/parport0");
+        perror("Failed to lock %s", parport_path);
         close(pfd);
         exit(0);
     }
 
 #endif
 
-#endif
 }
 
 
