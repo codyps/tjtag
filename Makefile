@@ -11,7 +11,7 @@ SRC = tjtag.c
 all: $(TARGET)
 
 tjtag: $(SRC)
-	$(CC) $(CFLAGS) -c $(SRC) -o bin/$@
+	$(CC) $(CFLAGS) $(SRC) -o bin/$@
 
 clean:
-	$(RM) $(SRC:.c=.o) bin/$(TARGET)
+	$(RM) $(SRC:.c=.o) bin/{$(TARGET),$(TARGET).exe}
