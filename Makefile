@@ -10,7 +10,7 @@ SRC = tjtag.c
 
 all: $(TARGET)
 
-tjtag: $(SRC)
+$(TARGET): $(SRC)
 	$(CC) $(CFLAGS) $(SRC) -o bin/$@
 
 clean:
