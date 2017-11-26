@@ -36,7 +36,7 @@
 
 #include "tjtag.h"
 #include "spi.h"
-
+#include "fastclk.h"
 #define TRUE  1
 #define FALSE 0
 
@@ -504,9 +504,10 @@ static unsigned char clockin(int tms, int tdi)
     tms = tms ? 1 : 0;
     tdi = tdi ? 1 : 0;
 // yoon's remark we set wtrst_n to be d4 so we are going to drive it low
-    if (wiggler) data = (1 << WTDO) | (0 << WTCK) | (tms << WTMS) | (tdi << WTDI)| (1 << WTRST_N);
-    else        data = (1 << TDO) | (0 << TCK) | (tms << TMS) | (tdi << TDI);
-    cable_wait();
+        if (wiggler) data = wclk_low[tms][tdi];
+  //  else        data = (1 << TDO) | (0 << TCK) | (tms << TMS) | (tdi << TDI);
+  else  data = clk_low[tms][tdi];
+	cable_wait();
 
 
 #ifdef WINDOWS_VERSION   // ---- Compiler Specific Code ----
@@ -515,8 +516,8 @@ static unsigned char clockin(int tms, int tdi)
 
     ioctl(pfd, PPWDATA, &data);
 #endif
-    if (wiggler) data = (1 << WTDO) | (1 << WTCK) | (tms << WTMS) | (tdi << WTDI) | (1 << WTRST_N);
-    else        data = (1 << TDO) | (1 << TCK) | (tms << TMS) | (tdi << TDI);
+    if (wiggler) data = wclk_high[tms][tdi];
+    else        data = clck_high[tms][tdi];
     cable_wait();
 
 
