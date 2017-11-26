@@ -568,7 +568,7 @@ void set_instr(int instr)
     clockin(0, 0);  // enter shift-ir (dummy)
     for (i=0; i < instruction_length; i++)
     {
-        clockin(i==(instruction_length - 1), (instr>>i)&1);
+        clockin(i==(instruction_length - 1), (instr&imask[i])?1:0);
     }
     clockin(1, 0);  // enter update-ir
     clockin(0, 0);  // enter runtest-idle
@@ -591,7 +591,7 @@ static unsigned int ReadWriteData(unsigned int in_data)
     clockin(0, 0);  // enter shift-dr
     for (i = 0 ; i < 32 ; i++)
     {
-        out_bit  = clockin((i == 31), ((in_data >> i) & 1));
+        out_bit  = clockin((i == 31), ((in_data & imask[i])?1:0));
         out_data = out_data | (out_bit << i);
     }
     clockin(1,0);   // enter update-dr
