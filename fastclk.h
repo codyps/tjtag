@@ -2,6 +2,7 @@
 #define _FASTCLK_H
 // Written by Mutaz Hussain Nov 2017 bluecard82[@]gmail[.]com
 // tjtag  modfication to be more fast
+// using as clk_low[tms][tdi] (when tclk 0) clk_high[tms][tdi] (when tclk 1) 
 // xilinx type cable
 
 unsigned char clk_low[2][2] =
@@ -14,6 +15,7 @@ unsigned char clk_high[2][2] =
 {0x16,0x17}
 };
 
+// all time wtrst is 1, using wclk_low[wtms][wtdi] (when wtckl 0) wclk_high[wtms][wtdi] (when wtclk 1) 
 // wiggler type cable
 unsigned char wclk_low[2][2] =
  { {0x90,0x98},
