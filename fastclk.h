@@ -1,6 +1,6 @@
 #ifndef _FASTCLK_H
 #define _FASTCLK_H
-// Written by Mutaz Hussain 2017
+// Written by Mutaz Hussain Nov 2017 bluecard82[@]gmail[.]com
 // tjtag  modfication to be more fast
 // xilinx type cable
 
@@ -39,7 +39,4 @@ unsigned int clockin_fast (unsigned char lowclk,unsigned char highclk,unsigned c
 // without heavy math instruction could
 // cost big time with megabytes flashed
 
-//in ReadWritedata func there is loop
-// for (int i=0;i <30; i++)
-// data  |= clockin_fast(clk_low[0][(indata&imask[i]?1:0)],clk_high[0][(indata&imask[i]?1:0)],i);
-//clockin_fast(clk_low[1][(indata&imask[i]?1:0)],clk_high[1][(indata&imask[i]?1:0)],i)
+#endif
