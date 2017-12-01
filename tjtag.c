@@ -35,7 +35,7 @@
 
 #include "tjtag.h"
 #include "spi.h"
-
+#include "fastclk.h"
 #define TRUE  1
 #define FALSE 0
 
@@ -497,9 +497,10 @@ static unsigned char clockin(int tms, int tdi)
     tms = tms ? 1 : 0;
     tdi = tdi ? 1 : 0;
 // yoon's remark we set wtrst_n to be d4 so we are going to drive it low
-    if (wiggler) data = (1 << WTDO) | (0 << WTCK) | (tms << WTMS) | (tdi << WTDI)| (1 << WTRST_N);
-    else        data = (1 << TDO) | (0 << TCK) | (tms << TMS) | (tdi << TDI);
-    cable_wait();
+        if (wiggler) data = wclk_low[tms][tdi];
+  //  else        data = (1 << TDO) | (0 << TCK) | (tms << TMS) | (tdi << TDI);
+  else  data = clk_low[tms][tdi];
+	cable_wait();
 
 
 #ifdef __WIN32__   // ---- Compiler Specific Code ----
@@ -508,8 +509,8 @@ static unsigned char clockin(int tms, int tdi)
 
     ioctl(pfd, PPWDATA, &data);
 #endif
-    if (wiggler) data = (1 << WTDO) | (1 << WTCK) | (tms << WTMS) | (tdi << WTDI) | (1 << WTRST_N);
-    else        data = (1 << TDO) | (1 << TCK) | (tms << TMS) | (tdi << TDI);
+    if (wiggler) data = wclk_high[tms][tdi];
+    else        data = clck_high[tms][tdi];
     cable_wait();
 
 
@@ -560,7 +561,7 @@ void set_instr(int instr)
     clockin(0, 0);  // enter shift-ir (dummy)
     for (i=0; i < instruction_length; i++)
     {
-        clockin(i==(instruction_length - 1), (instr>>i)&1);
+        clockin(i==(instruction_length - 1), (instr&imask[i])?1:0);
     }
     clockin(1, 0);  // enter update-ir
     clockin(0, 0);  // enter runtest-idle
@@ -583,7 +584,7 @@ static unsigned int ReadWriteData(unsigned int in_data)
     clockin(0, 0);  // enter shift-dr
     for (i = 0 ; i < 32 ; i++)
     {
-        out_bit  = clockin((i == 31), ((in_data >> i) & 1));
+        out_bit  = clockin((i == 31), ((in_data & imask[i])?1:0));
         out_data = out_data | (out_bit << i);
     }
     clockin(1,0);   // enter update-dr
